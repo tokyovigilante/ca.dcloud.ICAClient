@@ -15,7 +15,7 @@ if [[ -d $HOME/.ICAClient/.tmp ]]; then
 fi
 
 #Start the Citrix logging service
-/app/ICAClient/linuxx64/util/ctxlogd
+/app/ICAClient/linuxx64/util/ctxcwalogd
 #Start the Workspace self-service dashboard
 /app/ICAClient/linuxx64/selfservice
 
