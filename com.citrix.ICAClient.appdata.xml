@@ -15,13 +15,13 @@
         <category>Network</category>
         <category>Office</category>
     </categories>
-    <url type="homepage">https://github.com/dcloud-ca/com.citrix.ICAClient</url>
+    <url type="homepage">https://github.com/Eelviny/com.citrix.ICAClient</url>
     <url
         type="help"
-    >https://github.com/dcloud-ca/com.citrix.ICAClient#readme</url>
+    >https://github.com/Eelviny/com.citrix.ICAClient#readme</url>
     <url
         type="bugtracker"
-    >https://github.com/dcloud-ca/com.citrix.ICAClient/issues</url>
+    >https://github.com/Eelviny/com.citrix.ICAClient/issues</url>
     <project_license>LicenseRef-proprietary</project_license>
     <developer_name>Citrix Systems Inc.</developer_name>
     <releases>
