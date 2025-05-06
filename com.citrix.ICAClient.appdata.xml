@@ -4,10 +4,10 @@
     <launchable type="desktop-id">com.citrix.ICAClient.desktop</launchable>
     <metadata_license>CC0-1.0</metadata_license>
     <name>Citrix Workspace</name>
-    <summary>Citrix Workspace + HDX RTME Flatpak</summary>
+    <summary>Citrix Workspace Flatpak</summary>
     <description>
         <p
-        >This is a community package of the Citrix Workspace app, plus HDX RealTime Media Engine for Skype, not officially supported by Citrix. Report bugs through linked issue tracker.</p>
+        >This is a community package of the Citrix Workspace app, not officially supported by Citrix. Report bugs through linked issue tracker.</p>
         <p>Citrix is a virtual desktop infrastructure (VDI) provider</p>
         <p>This version of Citrix Workspace runs in a flatpak container.</p>
     </description>

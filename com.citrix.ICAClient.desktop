@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Citrix Workspace
-Comment=Citrix Workspace + HDX RTME Flatpak
+Comment=Citrix Workspace
 Exec=/app/bin/run.sh
 Icon=com.citrix.ICAClient
 Terminal=false

@@ -1,5 +1,5 @@
 # com.citrix.ICAClient
-Build and install the Citrix Workspace app (ICAClient) + HDX RealTime Media Engine for Skype as a Flatpak application for Linux.
+Build and install the Citrix Workspace app (ICAClient) as a Flatpak application for Linux.
 
 ## Disclaimer
 This project and I are not affiliated with Citrix. This repository does not contain any Citrix software. When the user builds the Flatpak application using this template, the required packages are obtained from Citrix's website, where Citrix has made the installers available for download. By downloading Citrix software, you agree to and accept the [Citrix End-User License Agreement](https://www.cloud.com/content/dam/cloud/documents/legal/end-user-agreement.pdf).
@@ -31,7 +31,7 @@ Or launch it via command line:
 *flatpak run com.citrix.ICAClient*
 
 ## Updating
-When you build the app, it will automatically grab the most recent versions of Workspace and HDX RTME. Therefore, if Citrix has published new verions you can update your flatpak app by simply re-running the *flatpak-builder* command listed above. However, you may need to empty the .flatpack-builder folder (located in the folder where you previously built the app), as Flatpak may see the build manifest hasn't changed and therefore use the cached files from the previous build, rather than re-downloading and grabbing the latest installers.
+When you build the app, it will automatically grab the most recent versions of Workspace. Therefore, if Citrix has published new verions you can update your flatpak app by simply re-running the *flatpak-builder* command listed above. However, you may need to empty the .flatpack-builder folder (located in the folder where you previously built the app), as Flatpak may see the build manifest hasn't changed and therefore use the cached files from the previous build, rather than re-downloading and grabbing the latest installers.
 
 ## Notes
 So far the only thing I can confirm is that the application starts. I've not actually logged into anything and made sure it works.

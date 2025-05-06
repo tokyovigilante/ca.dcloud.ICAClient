@@ -96,7 +96,7 @@ modules: #Requirements as per Citrix's site, that aren't included in the Flatpak
         sha256: bf26c966b8a8b7f3285ecc8bb3e467b9c20f9535b94dc451c9c559ddcff61925
 
   #Copies the launch/initial setup script from this project to the app directory.
-  #Downloads the installer archives for Workspace and HDX-RTME. The download links are dynamic, so they can't be hardcoded into this manifest. They have to be obtained by scraping the Citrix downloads page every time
+  #Downloads the installer archives for Workspace. The download links are dynamic, so they can't be hardcoded into this manifest. They have to be obtained by scraping the Citrix downloads page every time
   #Performs Citrix install as per the install.sh script
   #Copies Citrix icons to the folders where flatpak expects them, to be used as app icons.
 
@@ -108,8 +108,6 @@ modules: #Requirements as per Citrix's site, that aren't included in the Flatpak
         chmod +x /tmp/install.sh
 
         wget $(wget -O - https://www.citrix.com/downloads/workspace-app/linux/workspace-app-for-linux-latest.html | sed -ne '/linuxx64.*tar.gz/ s/<a .* rel="\(.*\)" id="downloadcomponent.*">/https:\1/p' | sed -e 's/\r//g') -O /tmp/linuxx64.tar.gz
-        tempURL=$(wget -O - https://www.citrix.com/downloads/workspace-app/additional-client-software/hdx-realtime-media-engine.html | grep -m 1 -e 'rel="https.*hdx-realtime-media-engine-.*html"' | sed -ne 's/<a .* rel="\(.*\)" id="downloadcomponent.*">/\1/p')
-        wget $(wget -O - $tempURL | sed -ne '/HDX.*zip/ s/<a .* rel="\(.*\)" id="downloadcomponent_3">/https:\1/p' | sed -e 's/\r//g') -O /tmp/hdx.zip
 
         mkdir -p /tmp/icaclient
         tar -zxf /tmp/linuxx64.tar.gz --directory=/tmp/icaclient
@@ -117,12 +115,6 @@ modules: #Requirements as per Citrix's site, that aren't included in the Flatpak
         cp /tmp/icaclient/linuxx64/linuxx64.cor/icons/000_Receiver_64.png /app/share/icons/hicolor/64x64/apps/com.citrix.ICAClient.png
         mkdir -p /app/share/icons/hicolor/256x256/apps
         cp /tmp/icaclient/linuxx64/linuxx64.cor/icons/receiver.png /app/share/icons/hicolor/256x256/apps/com.citrix.ICAClient.png
-
-        unzip /tmp/hdx.zip -d /tmp/HDX-RTME
-        cp -r /tmp/HDX-RTME/HDX*/* /tmp/icaclient
-        cd /tmp/icaclient/x86_64
-        ar -x citrix-hdx-realtime-media-engine_*_amd64.deb
-        tar -xf data.tar.xz
 
         /tmp/install.sh
 
