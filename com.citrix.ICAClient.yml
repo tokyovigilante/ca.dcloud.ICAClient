@@ -1,0 +1,167 @@
+app-id: com.citrix.ICAClient
+runtime: org.gnome.Platform
+runtime-version: "46"
+sdk: org.gnome.Sdk
+command: /app/bin/run.sh
+
+build-options:
+  build-args:
+    - --share=network
+
+finish-args:
+  - --device=all # For webcam access
+  - --share=network
+  - --socket=pulseaudio
+  - --socket=x11
+  - --share=ipc #Required for X11 to work properly
+  - --env=ICAROOT=/app/ICAClient/linuxx64
+  - --socket=wayland
+  - --persist=. #Gives the app a persistent that is treated as the home directory, located at ~/.var/app/com.citrix.ICAClient
+  - --persist=.ICAClient #Log/config directory (relative to the Flatpak container home folder)
+
+modules: #Requirements as per Citrix's site, that aren't included in the Flatpak runtime. https://docs.citrix.com/en-us/citrix-workspace-app-for-linux/system-requirements.html
+  - name: webkit2gtk-4.0 # Newer platform versions support webkit2gtk-4.1, this application specifically needs 4.0
+    sources:
+      - type: archive
+        url: https://webkitgtk.org/releases/webkitgtk-2.48.1.tar.xz
+        sha256: 98efdf21c4cdca0fe0b73ab5a8cb52093b5aa52d9b1b016a93f71dbfa1eb258f
+        x-checker-data:
+          type: html
+          url: https://webkitgtk.org/releases/
+          version-pattern: LATEST-STABLE-(\d[\.\d]+\d)
+          url-template: https://webkitgtk.org/releases/webkitgtk-$version.tar.xz
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DPORT=GTK
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DENABLE_DOCUMENTATION=OFF
+      - -DENABLE_MINIBROWSER=OFF
+      - -DENABLE_WEBDRIVER=OFF
+      - -DENABLE_SPEECH_SYNTHESIS=OFF
+      - -DENABLE_GAMEPAD=OFF
+      - -DUSE_LIBBACKTRACE=OFF
+      - -DUSE_GTK4=OFF
+      - -DUSE_SOUP2=ON
+      - -DENABLE_BUBBLEWRAP_SANDBOX=OFF
+    modules:
+      - shared-modules/libsoup/libsoup-2.4.json
+      - name: unifdef
+        no-autogen: true
+        make-install-args:
+          - prefix=${FLATPAK_DEST}
+        sources:
+          - type: archive
+            url: https://dotat.at/prog/unifdef/unifdef-2.12.tar.xz
+            sha256: 43ce0f02ecdcdc723b2475575563ddb192e988c886d368260bc0a63aee3ac400
+        cleanup:
+          - "*"
+
+  # - name: gtk2
+  #   buildsystem: autotools
+  #   sources:
+  #     - type: archive
+  #       url: http://archive.ubuntu.com/ubuntu/pool/main/g/gtk+2.0/gtk+2.0_2.24.33.orig.tar.xz
+  #       sha256: ac2ac757f5942d318a311a54b0c80b5ef295f299c2a73c632f6bfb1ff49cc6da
+
+  - name: libjson-c #Listed as a requirement "for instrumentation", not sure what that refers to
+    buildsystem: cmake
+    sources:
+      - type: archive
+        url: https://archive.ubuntu.com/ubuntu/pool/main/j/json-c/json-c_0.17.orig.tar.gz
+        sha256: 024d302a3aadcbf9f78735320a6d5aedf8b77876c8ac8bbb95081ca55054c7eb
+
+  - name: libxerces-c #Listed as a requirement for the self-service UI
+    buildsystem: autotools
+    sources:
+      - type: archive
+        url: https://archive.ubuntu.com/ubuntu/pool/universe/x/xerces-c/xerces-c_3.2.4+debian.orig.tar.xz
+        sha256: cf5b5d5fda86061a49bd5f58ef778aa9d7caba30c6b152a5d57c5ff545f50f2c
+
+  - name: gst-plugins-ugly #Listed as requirement for HDX RT video compression and MediaStream Windows media redirection
+    buildsystem: meson
+    sources:
+      - type: archive
+        url: https://gstreamer.freedesktop.org/src/gst-plugins-ugly/gst-plugins-ugly-1.22.12.tar.xz
+        sha256: d59a1aaf8dd2cc416dc5b5c0b7aecd02b1811bf1229aa724e6c2a503d3799083
+
+  - name: gnome-keyring #Listed as a requirement for Service Continuity
+    buildsystem: simple
+    build-commands:
+      - |
+        ./configure --prefix=/app --with-pkcs11-config=/app/share/p11-kit/modules --with-pkcs11-modules=/app/share/p11-kit/modules
+        make
+        make install
+    sources:
+      - type: archive
+        url: https://archive.ubuntu.com/ubuntu/pool/main/g/gnome-keyring/gnome-keyring_46.2.orig.tar.xz
+        sha256: bf26c966b8a8b7f3285ecc8bb3e467b9c20f9535b94dc451c9c559ddcff61925
+
+  #Copies the launch/initial setup script from this project to the app directory.
+  #Downloads the installer archives for Workspace and HDX-RTME. The download links are dynamic, so they can't be hardcoded into this manifest. They have to be obtained by scraping the Citrix downloads page every time
+  #Performs Citrix install as per the install.sh script
+  #Copies Citrix icons to the folders where flatpak expects them, to be used as app icons.
+
+  - name: bootstrap
+    buildsystem: simple
+    build-commands:
+      - |
+        cp ./install.sh /tmp
+        chmod +x /tmp/install.sh
+
+        wget $(wget -O - https://www.citrix.com/downloads/workspace-app/linux/workspace-app-for-linux-latest.html | sed -ne '/linuxx64.*tar.gz/ s/<a .* rel="\(.*\)" id="downloadcomponent.*">/https:\1/p' | sed -e 's/\r//g') -O /tmp/linuxx64.tar.gz
+        tempURL=$(wget -O - https://www.citrix.com/downloads/workspace-app/additional-client-software/hdx-realtime-media-engine.html | grep -m 1 -e 'rel="https.*hdx-realtime-media-engine-.*html"' | sed -ne 's/<a .* rel="\(.*\)" id="downloadcomponent.*">/\1/p')
+        wget $(wget -O - $tempURL | sed -ne '/HDX.*zip/ s/<a .* rel="\(.*\)" id="downloadcomponent_3">/https:\1/p' | sed -e 's/\r//g') -O /tmp/hdx.zip
+
+        mkdir -p /tmp/icaclient
+        tar -zxf /tmp/linuxx64.tar.gz --directory=/tmp/icaclient
+        mkdir -p /app/share/icons/hicolor/64x64/apps
+        cp /tmp/icaclient/linuxx64/linuxx64.cor/icons/000_Receiver_64.png /app/share/icons/hicolor/64x64/apps/com.citrix.ICAClient.png
+        mkdir -p /app/share/icons/hicolor/256x256/apps
+        cp /tmp/icaclient/linuxx64/linuxx64.cor/icons/receiver.png /app/share/icons/hicolor/256x256/apps/com.citrix.ICAClient.png
+
+        unzip /tmp/hdx.zip -d /tmp/HDX-RTME
+        cp -r /tmp/HDX-RTME/HDX*/* /tmp/icaclient
+        cd /tmp/icaclient/x86_64
+        ar -x citrix-hdx-realtime-media-engine_*_amd64.deb
+        tar -xf data.tar.xz
+
+        /tmp/install.sh
+
+        ln -s /etc/ssl/certs/*.pem /app/ICAClient/linuxx64/keystore/cacerts/
+        /app/ICAClient/linuxx64/util/ctx_rehash /app/ICAClient/linuxx64/keystore/cacerts/
+
+    sources:
+      - type: file
+        path: ./install.sh
+
+  - name: Run-script
+    buildsystem: simple
+    build-commands:
+      - |
+        cp ./run.sh /app/bin/
+        chmod +x /app/bin/run.sh
+    sources:
+      - type: file
+        path: ./run.sh
+
+  - name: Appdata-xml
+    buildsystem: simple
+    build-commands:
+      - |
+        mkdir -p /app/share/metainfo
+        cp ./com.citrix.ICAClient.appdata.xml /app/share/metainfo/
+        appstream-util validate-relax /app/share/metainfo/com.citrix.ICAClient.appdata.xml
+    sources:
+      - type: file
+        path: ./com.citrix.ICAClient.appdata.xml
+
+  - name: Desktop-file
+    buildsystem: simple
+    build-commands:
+      - |
+        mkdir -p /app/share/applications
+        cp ./com.citrix.ICAClient.desktop /app/share/applications/
+        desktop-file-validate /app/share/applications/com.citrix.ICAClient.desktop
+    sources:
+      - type: file
+        path: ./com.citrix.ICAClient.desktop

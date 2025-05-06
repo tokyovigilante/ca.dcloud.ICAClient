@@ -1,12 +1,13 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <component type="desktop">
-    <id>ca.dcloud.ICAClient</id>
-    <launchable type="desktop-id">ca.dcloud.ICAClient.desktop</launchable>
+    <id>com.citrix.ICAClient</id>
+    <launchable type="desktop-id">com.citrix.ICAClient.desktop</launchable>
     <metadata_license>CC0-1.0</metadata_license>
     <name>Citrix Workspace</name>
     <summary>Citrix Workspace + HDX RTME Flatpak</summary>
     <description>
-        <p>This is a community package of the Citrix Workspace app, plus HDX RealTime Media Engine for Skype, not officially supported by Citrix. Report bugs through linked issue tracker.</p>
+        <p
+        >This is a community package of the Citrix Workspace app, plus HDX RealTime Media Engine for Skype, not officially supported by Citrix. Report bugs through linked issue tracker.</p>
         <p>Citrix is a virtual desktop infrastructure (VDI) provider</p>
         <p>This version of Citrix Workspace runs in a flatpak container.</p>
     </description>
@@ -14,13 +15,17 @@
         <category>Network</category>
         <category>Office</category>
     </categories>
-    <url type="homepage">https://github.com/dcloud-ca/ca.dcloud.ICAClient</url>
-    <url type="help">https://github.com/dcloud-ca/ca.dcloud.ICAClient#readme</url>
-    <url type="bugtracker">https://github.com/dcloud-ca/ca.dcloud.ICAClient/issues</url>
+    <url type="homepage">https://github.com/dcloud-ca/com.citrix.ICAClient</url>
+    <url
+        type="help"
+    >https://github.com/dcloud-ca/com.citrix.ICAClient#readme</url>
+    <url
+        type="bugtracker"
+    >https://github.com/dcloud-ca/com.citrix.ICAClient/issues</url>
     <project_license>LicenseRef-proprietary</project_license>
     <developer_name>Citrix Systems Inc.</developer_name>
     <releases>
-        <release version="0.1" date="2021-08-22" type="development"/>
+        <release version="0.1" date="2021-08-22" type="development" />
     </releases>
     <provides>
         <mediatype>application/x-ica</mediatype>
