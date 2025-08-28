@@ -53,7 +53,7 @@ modules:
         x-checker-data:
           type: html
           url: https://www.citrix.com/downloads/workspace-app/linux/workspace-app-for-linux-latest.html
-          pattern: href=\\\"([^\"]*linuxx64.*?\\.tar\\.gz)\\\"
+          pattern: href=\\\"([^\"]*linuxx64.*?\\.tar\\.gz\\?[^\\\"]+)\\\"
           version-pattern: linuxx64-([0-9.]+)\\.tar\\.gz
       - type: file
         dest-filename: linux.tar.gz
@@ -64,7 +64,7 @@ modules:
         x-checker-data:
           type: html
           url: https://www.citrix.com/downloads/workspace-app/linux/workspace-app-for-linux-latest.html
-          pattern: href=\\\"([^\"]*linuxarm64.*?\\.tar\\.gz)\\\"
+          pattern: href=\\\"([^\"]*linuxarm64.*?\\.tar\\.gz\\?[^\\\"]+)\\\"
           version-pattern: linuxarm64-([0-9.]+)\\.tar\\.gz
       - type: file
         path: install.sh
