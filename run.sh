@@ -5,10 +5,20 @@ if [[ -d $HOME/.ICAClient/.tmp ]]; then
     rm -r $HOME/.ICAClient/.tmp
 fi
 
+#Add binaries to its path
+PATH=/app/ICAClient/linuxx64:$PATH
+
 #Start the Citrix logging service
 /app/ICAClient/linuxx64/util/ctxcwalogd
-#Start the Workspace self-service dashboard
-/app/ICAClient/linuxx64/selfservice
+
+if [ $# -eq 0 ]
+  then
+    #Start the Workspace self-service dashboard
+    selfservice
+  else
+    #Run the parameters
+    $*
+fi
 
 #This services seems to (sometimes) get started when launching Workspace. It's stubborn and requires SIGKILL to stop.
 if [[ ! -z $(ps -e | grep UtilDaemon) ]]; then
