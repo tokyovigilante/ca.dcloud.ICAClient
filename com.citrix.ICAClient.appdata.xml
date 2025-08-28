@@ -1,32 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<component type="desktop">
+<component type="desktop-application">
     <id>com.citrix.ICAClient</id>
     <launchable type="desktop-id">com.citrix.ICAClient.desktop</launchable>
-    <metadata_license>CC0-1.0</metadata_license>
     <name>Citrix Workspace</name>
     <summary>Citrix Workspace Flatpak</summary>
+    <developer_name>Citrix Systems Inc.</developer_name>
+    <metadata_license>CC0-1.0</metadata_license>
+    <project_license>LicenseRef-proprietary</project_license>
     <description>
-        <p
-        >This is a community package of the Citrix Workspace app, not officially supported by Citrix. Report bugs through linked issue tracker.</p>
         <p>Citrix is a virtual desktop infrastructure (VDI) provider</p>
-        <p>This version of Citrix Workspace runs in a flatpak container.</p>
+        <p>NOTE: This package is not verified by, affiliated with, or supported by Citrix.</p>
     </description>
     <categories>
         <category>Network</category>
         <category>Office</category>
     </categories>
     <url type="homepage">https://github.com/Eelviny/com.citrix.ICAClient</url>
-    <url
-        type="help"
-    >https://github.com/Eelviny/com.citrix.ICAClient#readme</url>
-    <url
-        type="bugtracker"
-    >https://github.com/Eelviny/com.citrix.ICAClient/issues</url>
-    <project_license>LicenseRef-proprietary</project_license>
-    <developer_name>Citrix Systems Inc.</developer_name>
-    <releases>
-        <release version="0.1" date="2021-08-22" type="development" />
-    </releases>
+    <url type="help">https://github.com/Eelviny/com.citrix.ICAClient#readme</url>
+    <url type="bugtracker">https://github.com/Eelviny/com.citrix.ICAClient/issues</url>
     <provides>
         <mediatype>application/x-ica</mediatype>
         <mediatype>application/vnd.citrix.receiver.configure</mediatype>
@@ -42,4 +33,7 @@
             </description>
         </agreement_section>
     </agreement>
+    <releases>
+        <release version="25.05.0.44" date="2025-06-12" />
+    </releases>
 </component>
