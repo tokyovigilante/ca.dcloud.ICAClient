@@ -48,24 +48,24 @@ modules:
         dest-filename: linux.tar.gz
         only-arches:
           - x86_64
-        url: https://downloads.citrix.com/25013/linuxx64-25.05.0.44.tar.gz?__gda__=exp=1756379634~acl=/*~hmac=7dcdd34bb266935cca6c0889c1fce90404723e1fea4b484cce15d6de6220efef
+        url: https://downloads.citrix.com/25013/linuxx64-25.05.0.44.tar.gz?__gda__=exp=1757236156~acl=/*~hmac=04ee6cd7b0f07dbe7ee66950094e106efe18abaf7ef6b6e2ef3e5afe477b8f9e
         sha256: 1d731722700153cd24e229f423e8bd7dc217eaed4aa3591620ba72fd5ed7983b
         x-checker-data:
           type: html
           url: https://www.citrix.com/downloads/workspace-app/linux/workspace-app-for-linux-latest.html
-          pattern: href=\\\"([^\"]*linuxx64.*?\\.tar\\.gz\\?[^\\\"]+)\\\"
-          version-pattern: linuxx64-([0-9.]+)\\.tar\\.gz
+          pattern: filepathOrUrl:\s*["']//downloads\.citrix\.com/[0-9]+/(linuxx64-[0-9.]+\.tar\.gz)["']
+          version-pattern: linuxx64-([0-9.]+)\.tar\.gz
       - type: file
         dest-filename: linux.tar.gz
         only-arches:
           - aarch64
-        url: https://downloads.citrix.com/25013/linuxarm64-25.05.0.44.tar.gz?__gda__=exp=1756379634~acl=/*~hmac=7dcdd34bb266935cca6c0889c1fce90404723e1fea4b484cce15d6de6220efef
+        url: https://downloads.citrix.com/25013/linuxarm64-25.05.0.44.tar.gz?__gda__=exp=1757236156~acl=/*~hmac=04ee6cd7b0f07dbe7ee66950094e106efe18abaf7ef6b6e2ef3e5afe477b8f9e
         sha256: 47f2d99cdacfb607c79e9b257bd7d9caa7ee1bb0658873ce94c6e598ba38917c
         x-checker-data:
           type: html
           url: https://www.citrix.com/downloads/workspace-app/linux/workspace-app-for-linux-latest.html
-          pattern: href=\\\"([^\"]*linuxarm64.*?\\.tar\\.gz\\?[^\\\"]+)\\\"
-          version-pattern: linuxarm64-([0-9.]+)\\.tar\\.gz
+          pattern: filepathOrUrl:\s*["']//downloads\.citrix\.com/[0-9]+/(linuxarm64-[0-9.]+\.tar\.gz)["']
+          version-pattern: linuxarm64-([0-9.]+)\.tar\.gz
       - type: file
         path: install.sh
       - type: file
